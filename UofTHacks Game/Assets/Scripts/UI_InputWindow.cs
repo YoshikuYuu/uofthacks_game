@@ -9,8 +9,6 @@ using TMPro;
 
 public class UI_InputWindow : MonoBehaviour
 {
-    [SerializeField] private Heads_Update headsUpdateWindow;
-
     private TMP_InputField[] inputFields;
     private Button_UI[] right_btns;
     private Button_UI[] left_btns;
@@ -18,17 +16,14 @@ public class UI_InputWindow : MonoBehaviour
     private string[] codeLines;
     private int[] tabCount;
 
-    public void Awake() {    
-
-        headsUpdateWindow.loadHeads();
+    public void Awake() {        
         inputFields = new TMP_InputField[8];
         right_btns = new Button_UI[8];
         left_btns = new Button_UI[8];
 
         for (int i = 0; i < 8; i++) {
             inputFields[i] = transform.Find("inputField" + i).GetComponent<TMP_InputField>();
-
-            inputFields[i].interactable = true;            right_btns[i] = transform.Find("right_btn" + i).GetComponent<Button_UI>();
+            right_btns[i] = transform.Find("right_btn" + i).GetComponent<Button_UI>();
             left_btns[i] = transform.Find("left_btn" + i).GetComponent<Button_UI>();
         }
 
@@ -63,11 +58,9 @@ public class UI_InputWindow : MonoBehaviour
                 right_btns[i].ClickFunc = null;
                 left_btns[i].ClickFunc = null;
 
-                // Debug.Log(codeLines[i]);
-                // Debug.Log(tabCount[i]);
+                Debug.Log(codeLines[i]);
+                Debug.Log(tabCount[i]);
             }
-
-            run_btn.ClickFunc = null;            headsUpdateWindow.getAttacked();
         };
 
         right_btns[0].ClickFunc = () => {
@@ -167,7 +160,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[6].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[6] < 2) {
+            if (tabCount[0] < 2) {
                 rectTransform.anchoredPosition = new Vector3(position.x + 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x + 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x + 30f, btn_posL.y, 0);
@@ -182,7 +175,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[7].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[7] < 2) {
+            if (tabCount[0] < 2) {
                 rectTransform.anchoredPosition = new Vector3(position.x + 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x + 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x + 30f, btn_posL.y, 0);
@@ -197,7 +190,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[0].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[0] > 0) {
+            if (position.x != 0) {
                 rectTransform.anchoredPosition = new Vector3(position.x - 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x - 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x - 30f, btn_posL.y, 0);
@@ -212,7 +205,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[1].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[1] > 0) {
+            if (position.x != 0) {
                 rectTransform.anchoredPosition = new Vector3(position.x - 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x - 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x - 30f, btn_posL.y, 0);
@@ -227,7 +220,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[2].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[2] > 0) {
+            if (position.x != 0) {
                 rectTransform.anchoredPosition = new Vector3(position.x - 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x - 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x - 30f, btn_posL.y, 0);
@@ -242,7 +235,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[3].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[3] > 0) {
+            if (position.x != 0) {
                 rectTransform.anchoredPosition = new Vector3(position.x - 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x - 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x - 30f, btn_posL.y, 0);
@@ -257,7 +250,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[4].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[4] > 0) {
+            if (position.x != 0) {
                 rectTransform.anchoredPosition = new Vector3(position.x - 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x - 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x - 30f, btn_posL.y, 0);
@@ -272,7 +265,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[5].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[5] > 0) {
+            if (position.x != 0) {
                 rectTransform.anchoredPosition = new Vector3(position.x - 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x - 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x - 30f, btn_posL.y, 0);
@@ -287,7 +280,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[6].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[6] > 0) {
+            if (position.x != 0) {
                 rectTransform.anchoredPosition = new Vector3(position.x - 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x - 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x - 30f, btn_posL.y, 0);
@@ -302,7 +295,7 @@ public class UI_InputWindow : MonoBehaviour
             Vector3 btn_posR = btn_transR.anchoredPosition;
             RectTransform btn_transL = left_btns[7].GetComponent<RectTransform>();
             Vector3 btn_posL = btn_transL.anchoredPosition;
-            if (tabCount[7] > 0) {
+            if (position.x != 0) {
                 rectTransform.anchoredPosition = new Vector3(position.x - 30f, position.y, 0);
                 btn_transR.anchoredPosition = new Vector3(btn_posR.x - 30f, btn_posR.y, 0);
                 btn_transL.anchoredPosition = new Vector3(btn_posL.x - 30f, btn_posL.y, 0);
@@ -330,4 +323,4 @@ public class UI_InputWindow : MonoBehaviour
     public int[] getTabCount() {
         return tabCount;
     }
-}
+ }

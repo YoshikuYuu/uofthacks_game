@@ -1,13 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.UI;
-using CodeMonkey;
-using CodeMonkey.Utils;
-using TMPro;
+
 public class Program : MonoBehaviour
 {
+
     public class PlayerCodeBlock {
         // A block of code that can be executed, with head being the first line
         //and all other lines being nested as code blocks
@@ -113,7 +112,6 @@ public class Program : MonoBehaviour
         }
         public void Execute(List<PlayerCodeBlock> nested) {
             target.TakeDamage(player.GetAttack());
-
         }
     }
 
@@ -251,11 +249,14 @@ public class Program : MonoBehaviour
             {"hydra.get_heads()", () => hydra},
             {"heads", () => hydra}
         };
+        if (false) {
+            ExecuteMain();
+        }
     }
 
-    void ExecuteMain(string[] codeLines)
+    void ExecuteMain()
     {
-        playerCodeComponent = codeLines;
+        playerCodeComponent = null;
         // Split code at newlines, trim each line, add appropriate indentaion
         // If player indents code for no reason, unindent it
         // Remove all empty lines
