@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using CodeMonkey;
@@ -9,6 +10,7 @@ using TMPro;
 using System.Text.RegularExpressions;
 public class Program : MonoBehaviour
 {
+
     public class PlayerCodeBlock {
         // A block of code that can be executed, with head being the first line
         //and all other lines being nested as code blocks
@@ -114,7 +116,6 @@ public class Program : MonoBehaviour
         }
         public void Execute(List<PlayerCodeBlock> nested) {
             target.TakeDamage(player.GetAttack());
-
         }
     }
 
@@ -253,12 +254,14 @@ public class Program : MonoBehaviour
             {"heads", () => hydra}
         };
 
-        
+        if (false) {
+            ExecuteMain();
+        }
     }
 
-    void ExecuteMain(string[] codeLines)
+    void ExecuteMain()
     {
-        playerCodeComponent = codeLines;
+        playerCodeComponent = null;
         // Split code at newlines, trim each line, add appropriate indentaion
         // If player indents code for no reason, unindent it
         // Remove all empty lines
@@ -363,20 +366,20 @@ public class Program : MonoBehaviour
         if (_CheckMatch(@"^(attack|fireball|iceblast)\(\w+\)$", line)) {
             string[] parts = Regex.Split(line, @"(|)");
             if (parts[0] == "attack") {
-                if (_TranslateExpression(parts[1]).Item1 is HydraHead) {
-                    return new Attack((HydraHead)_TranslateExpression(parts[1]).Item1);
+                if (_TranslateExpression(parts[1]) is HydraHead) {
+                    return new Attack((HydraHead)_TranslateExpression(parts[1]));
                 } else {
                     throw new Exception("Invalid attack target");
                 }
             } else if (parts[0] == "fireball") {
-                if (_TranslateExpression(parts[1]).Item1 is HydraHead) {
-                    return new FireBall((HydraHead)_TranslateExpression(parts[1]).Item1);
+                if (_TranslateExpression(parts[1]) is HydraHead) {
+                    return new FireBall((HydraHead)_TranslateExpression(parts[1]));
                 } else {
                     throw new Exception("Invalid fireball target");
                 }
             } else if (parts[0] == "iceblast") {
-                if (_TranslateExpression(parts[1]).Item1 is HydraHead) {
-                    return new IceBlast((HydraHead)_TranslateExpression(parts[1]).Item1);
+                if (_TranslateExpression(parts[1]) is HydraHead) {
+                    return new IceBlast((HydraHead)_TranslateExpression(parts[1]));
                 } else {
                     throw new Exception("Invalid iceblast target");
                 }
@@ -390,60 +393,62 @@ public class Program : MonoBehaviour
         }
     }
 
-    static private (object, string) _TranslateExpression(string line) {
+    static private object _TranslateExpression(string line) {
         line = line.Trim();
         if (_CheckMatch(@"^\d+$", line)) {
-            return (int.Parse(line), "int");
+            return int.Parse(line);
         }
         else if (_CheckMatch("^\".*\"$", line)) {
-            return (Regex.Replace(line, "^\"|\"$", ""), "string");
-        } else if (_CheckMatch(@"^[^\[\]\s]+\.", line)) {
-            if (_CheckMatch("^hydra.get_heads()", line)) {
-                if (_CheckMatch(@"^hydra.get_heads\(\)$", line)) {
-                    return (hydra, "list of hydra heads");
-                } else if (_CheckMatch(@"^hydra.get_heads\(\)\[.*\]", line)) {
-                    string[] parts = Regex.Split(line, @"[|]");
-                    int index = _TranslateIndex(parts[1]);
-                    if (_CheckMatch(@"^hydra.get_heads\(\)\[.*\]$", line)) {
-                        return (hydra[index], "hydra head");
-                    } else {
-                        throw new Exception("Invalid expression");
-                        // if (intFunctionDictionary.ContainsKey(parts[2])) {
-                        //     return (intFunctionDictionary[parts[2]](hydra[index]), "int");
-                        // } else if (stringFunctionDictionary.ContainsKey(parts[2])) {
-                        //     return (stringFunctionDictionary[parts[2]](hydra[index]), "string");
-                        // } else {
-                        //     throw new Exception("Invalid expression");
-                        // }
-                    }
-                }
-            // } else if (_CheckMatch("^Player.getHP", line)) {
-            //     return (player.getHP(), "int");
-            } else {
-                throw new Exception("Invalid expression");
-            }
-        } else if (_CheckMatch(@"^heads\[.*\]", line)) {
-            string[] parts = Regex.Split(line, @"\[|\]");
-            int index = _TranslateIndex(parts[1]);
-            if (_CheckMatch(@"^[^\.\s]+\[.*\]$", line)) {
-                return (hydra[index], "hydra head");
-            // } else if (_CheckMatch(@"^[^\.\s]+\[.*\]\.\S+$")){
-            //     string sub_exp = Regex.Replace(line, @"^.*\.", "");
-            //     if (intFunctionDictionary.ContainsKey(sub_exp)) {
-            //         return (intFunctionDictionary[sub_exp](hydra[index]), "int");
-            //     } else if (stringFunctionDictionary.ContainsKey(sub_exp)) {
-            //         return (stringFunctionDictionary[sub_exp](hydra[index]), "string");
-            //     } else {
-            //         throw new Exception("Invalid expression");
-            //     }
-            } else {
-                throw new Exception("Invalid expression");
-            }
+            return Regex.Replace(line, "^\"|\"$", "");
         } else {
             throw new Exception("Invalid expression");
         }
-        throw new Exception("Invalid expression");
     }
+    //     } else if (_CheckMatch(@"^[^\[\]\s]+\.", line)) {
+    //         if (_CheckMatch("^hydra.get_heads()", line)) {
+    //             if (_CheckMatch(@"^hydra.get_heads\(\)$", line)) {
+    //                 return hydra;
+    //             } else if (_CheckMatch(@"^hydra.get_heads\(\)\[.*\]", line)) {
+    //                 string[] parts = Regex.Split(line, @"[|]");
+    //                 int index = _TranslateIndex(parts[1]);
+    //                 if (_CheckMatch(@"^hydra.get_heads\(\)\[.*\]$", line)) {
+    //                     return hydra[index];
+    //                 } else {
+    //                     if (intFunctionDictionary.ContainsKey(parts[2])) {
+    //                         return intFunctionDictionary[parts[2]](hydra[index]);
+    //                     } else if (stringFunctionDictionary.ContainsKey(parts[2])) {
+    //                         return stringFunctionDictionary[parts[2]](hydra[index]);
+    //                     } else {
+    //                         throw new Exception("Invalid expression");
+    //                     }
+    //                 }
+    //             }
+    //         } else if (_CheckMatch("^Player.getHP", line)) {
+    //             return player.getHP();
+    //         } else {
+    //             throw new Exception("Invalid expression");
+    //         }
+    //     } else if (_CheckMatch(@"^heads\[.*\]", line)) {
+    //         string[] parts = Regex.Split(line, @"\[|\]");
+    //         int index = _TranslateIndex(parts[1]);
+    //         if (_CheckMatch(@"^[^\.\s]+\[.*\]$")) {
+    //             return hydra[index];
+    //         } else if (_CheckMatch(@"^[^\.\s]+\[.*\]\.\S+$")){
+    //             string sub_exp = Regex.Replace(line, @"^.*\.", "");
+    //             if (intFunctionDictionary.ContainsKey(sub_exp)) {
+    //                 return intFunctionDictionary[sub_exp](hydra[index]);
+    //             } else if (stringFunctionDictionary.ContainsKey(sub_exp)) {
+    //                 return stringFunctionDictionary[sub_exp](hydra[index]);
+    //             } else {
+    //                 throw new Exception("Invalid expression");
+    //             }
+    //         } else {
+    //             throw new Exception("Invalid expression");
+    //         }
+    //     } else {
+    //         throw new Exception("Invalid expression");
+    //     }
+    // }
 
     static private int _TranslateIndex(string indexStr) {
         // Only handles square brackets with one index

@@ -67,7 +67,8 @@ public class UI_InputWindow : MonoBehaviour
                 // Debug.Log(tabCount[i]);
             }
 
-            run_btn.ClickFunc = null;            headsUpdateWindow.getAttacked();
+            run_btn.ClickFunc = null;
+            headsUpdateWindow.getAttacked();
         };
 
         right_btns[0].ClickFunc = () => {
